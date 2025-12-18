@@ -5,7 +5,7 @@ A simple HTTP web service built with Python.
 ## Requirements
 
 - Python 3.13 or higher
-- uv (Python package manager)
+- uv (Package manager)
 
 ## Installation
 
