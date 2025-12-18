@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ lower(github.repository) }}
           tags: |
             type=ref,event=branch
             type=sha,prefix={{branch}}-
@@ -43,7 +43,7 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/${{ lower(github.repository) }}:${{ github.sha }}
 
   deploy:
     needs: build
@@ -55,7 +55,7 @@ jobs:
           HTTP_CODE=$(curl -s -o response.txt -w "%{http_code}" -X POST \
             -H "Content-Type: application/json" \
             -H "X-API-Key: ${{ secrets.LMS_API_KEY }}" \
-            -d '{"image":"ghcr.io/${{ github.repository }}:${{ github.sha }}","repository":"${{ github.repository }}"}' \
+            -d '{"image":"ghcr.io/${{ lower(github.repository) }}:${{ github.sha }}","repository":"${{ lower(github.repository) }}"}' \
             https://lms-portal.staging.k3scluster.tech/api/deploy-requests)
 
           if [ "$HTTP_CODE" != "200" ]; then
